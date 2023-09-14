@@ -1,13 +1,13 @@
 import React from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { loadBlogPost } from "@/helpers/file-helpers";
+import { COMPONENT_MAP } from "@/helpers/mdx-helpers";
 
 import BlogHero from "@/components/BlogHero";
-import CodeSnippet from "@/components/CodeSnippet/CodeSnippet";
 
 import styles from "./postSlug.module.css";
 
-export const getMetaInfo = React.cache(async postSlug => {
+export const getMetaInfo = React.cache(async (postSlug) => {
   const { frontmatter, content } = await loadBlogPost(postSlug);
   return { frontmatter, content };
 });
@@ -27,12 +27,9 @@ async function BlogPost({ params }) {
 
   return (
     <article className={styles.wrapper}>
-      <BlogHero
-        title={frontmatter.title}
-        publishedOn={frontmatter.publishedOn}
-      />
+      <BlogHero title={frontmatter.title} publishedOn={frontmatter.publishedOn} />
       <div className={styles.page}>
-        <MDXRemote source={content} components={{ pre: CodeSnippet }} />
+        <MDXRemote source={content} components={COMPONENT_MAP} />
       </div>
     </article>
   );
